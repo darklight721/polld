@@ -8,7 +8,7 @@ var Choices = React.createClass({
   componentDidUpdate() {
     if (!this.shouldFocusLast) return;
 
-    this.refs[this.props.list.length - 1].getDOMNode().focus();
+    focus(this.refs[this.props.list.length - 1]);
     this.shouldFocusLast = false;
   },
   render() {
@@ -23,7 +23,11 @@ var Choices = React.createClass({
   renderChoice(choice, index) {
     return (
       <li key={choice + index}>
-        <input ref={index} type="text" defaultValue={choice} onBlur={this.handleChange.bind(this, index)} onKeyPress={this.handleEnter.bind(this, index)}/>
+        <input ref={index}
+               type="text"
+               defaultValue={choice}
+               onBlur={this.handleChange.bind(this, index)}
+               onKeyPress={this.handleEnter.bind(this, index)}/>
         <button type="button" onClick={this.handleRemove.bind(this, index)}>&times;</button>
       </li>
     );
@@ -40,11 +44,14 @@ var Choices = React.createClass({
   },
   handleEnter(index, e) {
     if (e.which !== 13) return;
-    var nextItem = this.refs[index + 1];
 
-    e.preventDefault();
-    nextItem ? nextItem.getDOMNode().focus() : this.handleAdd();
+    var nextItem = this.refs[index + 1];
+    nextItem ? focus(nextItem) : this.handleAdd();
   }
 });
+
+function focus(ref) {
+  ref.getDOMNode().focus();
+}
 
 module.exports = Choices;

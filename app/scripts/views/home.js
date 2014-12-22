@@ -6,22 +6,32 @@ var Home = React.createClass({
   getInitialState() {
     return {
       question: '',
-      choices: ['', '']
+      choices: ['', ''],
+      allowMultipleAnswers: false
     }
   },
   render() {
     return (
       <form onSubmit={this.handleSubmit}>
         <label htmlFor="question">Enter a question</label>
-        <input id="question" type="text" value={this.state.question} onChange={this.handleQuestionChange} required/>
+        <input id="question"
+               type="text"
+               value={this.state.question}
+               onChange={this.handleQuestionChange}
+               required/>
         <Choices list={this.state.choices} onChange={this.handleChoicesChange}/>
-        <button type="submit">Done</button>
+        <label>
+          <input type="checkbox"
+                 value={this.state.allowMultipleAnswers}
+                 onChange={this.handleAllowMultipleAnswersChange}/>
+          Allow multiple answers?
+        </label>
+        <button onClick={this.save}>Done</button>
       </form>
     );
   },
   handleSubmit(e) {
     e.preventDefault();
-    console.log('on submit');
   },
   handleQuestionChange(e) {
     this.setState({ question: e.target.value });
@@ -40,6 +50,12 @@ var Home = React.createClass({
     }
 
     this.setState({ choices: choices });
+  },
+  handleAllowMultipleAnswersChange() {
+    this.setState({ allowMultipleAnswers: !this.state.allowMultipleAnswers });
+  },
+  save() {
+    // todo
   }
 });
 
