@@ -1,41 +1,24 @@
-/** @jsx React.DOM */
-
 var React = window.React = require('react'),
+    Router = require('react-router'),
+  { Route, DefaultRoute, RouteHandler } = Router,
+    Home = require('./views/home'),
     mountNode = document.getElementById("app");
 
-var TodoList = React.createClass({
-  render: function() {
-    var createItem = function(itemText) {
-      return <li>{itemText}</li>;
-    };
-    return <ul>{this.props.items.map(createItem)}</ul>;
-  }
-});
-var TodoApp = React.createClass({
-  getInitialState() {
-    return {items: [], text: ''};
-  },
-  onChange(e) {
-    this.setState({text: e.target.value});
-  },
-  handleSubmit(e) {
-    e.preventDefault();
-    var nextItems = this.state.items.concat([this.state.text]);
-    var nextText = '';
-    this.setState({items: nextItems, text: nextText});
-  },
+var App = React.createClass({
   render() {
     return (
       <div>
-        <h3>TODO</h3>
-        <TodoList items={this.state.items} />
-        <form onSubmit={this.handleSubmit}>
-          <input onChange={this.onChange} value={this.state.text} />
-          <button>{'Add #' + (this.state.items.length + 1)}</button>
-        </form>
+        <h1>polld</h1>
+        <RouteHandler/>
       </div>
     );
   }
 });
 
-React.render(<TodoApp />, mountNode);
+var routes = (
+  <Route name="app" path="/" handler={App}>
+    <DefaultRoute handler={Home}/>
+  </Route>
+);
+
+Router.run(routes, (Handler) => React.render(<Handler/>, mountNode));
