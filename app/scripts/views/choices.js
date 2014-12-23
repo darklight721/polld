@@ -5,12 +5,14 @@ var Choices = React.createClass({
     list: React.PropTypes.arrayOf(React.PropTypes.string).isRequired,
     onChange: React.PropTypes.func.isRequired
   },
+
   componentDidUpdate() {
     if (!this.shouldFocusLast) return;
 
     focus(this.refs[this.props.list.length - 1]);
     this.shouldFocusLast = false;
   },
+
   render() {
     return (
       <div>
@@ -20,6 +22,7 @@ var Choices = React.createClass({
       </div>
     );
   },
+
   renderChoice(choice, index) {
     return (
       <li key={choice + index}>
@@ -32,16 +35,20 @@ var Choices = React.createClass({
       </li>
     );
   },
+
   handleAdd() {
     this.shouldFocusLast = true;
     this.props.onChange('');
   },
+
   handleChange(index, e) {
     this.props.onChange(e.target.value, index);
   },
+
   handleRemove(index) {
     this.props.onChange(null, index);
   },
+
   handleEnter(index, e) {
     if (e.which !== 13) return;
 

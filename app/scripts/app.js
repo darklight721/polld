@@ -2,7 +2,10 @@ var React = window.React = require('react'),
     Router = require('react-router'),
   { Route, DefaultRoute, RouteHandler } = Router,
     Home = require('./views/home'),
-    mountNode = document.getElementById("app");
+    Answer = require('./views/answer'),
+    Share = require('./views/share'),
+    Result = require('./views/result'),
+    mountNode = document.getElementById('app');
 
 var App = React.createClass({
   render() {
@@ -18,6 +21,9 @@ var App = React.createClass({
 var routes = (
   <Route name="app" path="/" handler={App}>
     <DefaultRoute handler={Home}/>
+    <Route name="answer" path=":key" handler={Answer}/>
+    <Route name="share" path=":key/share" handler={Share}/>
+    <Route name="result" path=":key/result" handler={Result}/>
   </Route>
 );
 

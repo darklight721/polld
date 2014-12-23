@@ -1,8 +1,12 @@
-var React = require('react/addons'),
+var React = require('react'),
+    Router = require('react-router'),
     Choices = require('./choices'),
+    Store = require('../store'),
     _ = require('underscore');
 
 var Home = React.createClass({
+  mixins: [ Router.Navigation ],
+
   getInitialState() {
     return {
       question: '',
@@ -10,6 +14,7 @@ var Home = React.createClass({
       allowMultipleAnswers: false
     }
   },
+
   render() {
     return (
       <form onSubmit={this.handleSubmit}>
@@ -30,12 +35,15 @@ var Home = React.createClass({
       </form>
     );
   },
+
   handleSubmit(e) {
     e.preventDefault();
   },
+
   handleQuestionChange(e) {
     this.setState({ question: e.target.value });
   },
+
   handleChoicesChange(choice, index) {
     var choices = _.extend([], this.state.choices);
 
@@ -51,11 +59,14 @@ var Home = React.createClass({
 
     this.setState({ choices: choices });
   },
+
   handleAllowMultipleAnswersChange() {
     this.setState({ allowMultipleAnswers: !this.state.allowMultipleAnswers });
   },
+
   save() {
-    // todo
+    var key = Store.savePoll(this.state);
+    this.transitionTo('share', { key });
   }
 });
 
