@@ -5,6 +5,7 @@ var React = window.React = require('react'),
     Answer = require('./views/answer'),
     Share = require('./views/share'),
     Result = require('./views/result'),
+    NotFound = require('./views/not-found'),
     mountNode = document.getElementById('app');
 
 var App = React.createClass({
@@ -21,6 +22,7 @@ var App = React.createClass({
 var routes = (
   <Route name="app" path="/" handler={App}>
     <DefaultRoute handler={Home}/>
+    <Route name="404" handler={NotFound}/>
     <Route name="answer" path=":key" handler={Answer}/>
     <Route name="share" path=":key/share" handler={Share}/>
     <Route name="result" path=":key/result" handler={Result}/>
