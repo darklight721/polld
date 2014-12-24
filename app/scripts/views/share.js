@@ -1,9 +1,19 @@
 var React = require('react'),
     Router = require('react-router'),
-  { Link } = Router;
+  { Link } = Router,
+    Store = require('../store');
 
 var Share = React.createClass({
   mixins: [ Router.State ],
+
+  statics: {
+    willTransitionTo(transition, params) {
+      transition.wait(
+        Store.fetchPoll(params.key)
+             .then((data) => !data && transition.redirect('404'))
+      );
+    }
+  },
 
   render() {
     var params = this.getParams(),
