@@ -45,8 +45,7 @@ var Answer = React.createClass({
   renderChoice(choice, index) {
     return (
       <li key={index}>
-        <button refs={index}
-                className={this.state.answers[index] ? 'active' : ''}
+        <button className={this.state.answers[index] ? 'active' : ''}
                 onClick={this.answer.bind(this, index)}>{choice}</button>
       </li>
     );
