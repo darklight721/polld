@@ -1,4 +1,5 @@
 var Firebase = require('firebase'),
+    Promise = require('promise'),
     _ = require('underscore'),
     rootRef = new Firebase('https://darksmint.firebaseio.com/'),
     pollsRef = rootRef.child('polls'),
@@ -15,21 +16,20 @@ var Store = {
   },
 
   fetchPoll(key) {
-    var deferred = $.Deferred(),
-        poll = this.getPoll(key);
+    return new Promise((resolve, reject) => {
+      var poll = this.getPoll(key);
 
-    if (poll) {
-      deferred.resolve(poll);
-    }
-    else {
-      pollsRef.child(key).once(
-        'value',
-        (snapshot) => deferred.resolve(this.setPoll(key, snapshot.val())),
-        () => deferred.reject()
-      );
-    }
-
-    return deferred.promise();
+      if (poll) {
+        resolve(poll);
+      }
+      else {
+        pollsRef.child(key).once(
+          'value',
+          (snapshot) => resolve(this.setPoll(key, snapshot.val())),
+          reject
+        );
+      }
+    });
   },
 
   answerPoll(key, answers) {
