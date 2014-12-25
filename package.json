@@ -20,7 +20,6 @@
     "promise": "^6.0.1",
     "react": "latest",
     "react-router": "^0.11.6",
-    "reactfire": "^0.4.0",
     "reactify": "latest",
     "underscore": "^1.7.0",
     "vinyl-source-stream": "^1.0.0",
