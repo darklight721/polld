@@ -57,7 +57,7 @@ var Home = React.createClass({
       choices.splice(index, 1);
     }
 
-    this.setState({ choices: choices });
+    this.setState({ choices });
   },
 
   handleAllowMultipleAnswersChange() {

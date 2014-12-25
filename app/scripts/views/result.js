@@ -57,13 +57,7 @@ var Result = React.createClass({
   },
 
   renderResult() {
-    var result = this.state.result,
-        choices = _.chain(this.state.poll.choices)
-                   .map((choice, index) => {
-                     return { name: choice, result: result[index] || 0 } })
-                   .sortBy('result')
-                   .reverse()
-                   .value();
+    var choices = this.getChoicesWithResult();
 
     return (
       <ul>{
@@ -72,6 +66,16 @@ var Result = React.createClass({
         })
       }</ul>
     );
+  },
+
+  getChoicesWithResult() {
+    var result = this.state.result;
+    return _.chain(this.state.poll.choices)
+            .map((name, index) => {
+              return { name, result: result[index] || 0 } })
+            .sortBy('result')
+            .reverse()
+            .value();
   }
 });
 
