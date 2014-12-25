@@ -4,7 +4,8 @@ var Firebase = require('firebase'),
     pollsRef = rootRef.child('polls'),
     answersRef = rootRef.child('answers'),
     pollsStore = {},
-    answersStore = window.localStorage;
+    answersStore = window.localStorage,
+    resultRef = null;
 
 var Store = {
   savePoll(data) {
@@ -69,6 +70,20 @@ var Store = {
 
   setAnswers(key, answers) {
     answersStore.setItem(key, JSON.stringify(answers));
+  },
+
+  listenToResult(key, callback) {
+    this.stopListeningToResult();
+
+    resultRef = answersRef.child(key);
+    resultRef.on('value', (snapshot) => callback(snapshot.val()));
+  },
+
+  stopListeningToResult() {
+    if (resultRef) {
+      resultRef.off('value');
+      resultRef = null;
+    }
   }
 };
 

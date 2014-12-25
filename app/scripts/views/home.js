@@ -45,7 +45,7 @@ var Home = React.createClass({
   },
 
   handleChoicesChange(choice, index) {
-    var choices = _.extend([], this.state.choices);
+    var choices = _.clone(this.state.choices);
 
     if (choice !== null) {
       if (index >= 0)

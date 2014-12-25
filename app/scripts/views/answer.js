@@ -1,5 +1,6 @@
 var React = require('react'),
     Router = require('react-router'),
+  { Link } = Router,
     Store = require('../store'),
     _ = require('underscore');
 
@@ -37,7 +38,7 @@ var Answer = React.createClass({
       <div>
         {this.state.poll.question}
         <ul>{this.state.poll.choices.map(this.renderChoice)}</ul>
-        {this.renderSendButton()}
+        {this.renderResultLink()}
       </div>
     );
   },
@@ -51,10 +52,10 @@ var Answer = React.createClass({
     );
   },
 
-  renderSendButton() {
-    if (this.state.poll.allowMultipleAnswer) {
+  renderResultLink() {
+    if (!_.isEmpty(this.state.answers)) {
       return (
-        <button>Submit</button>
+        <Link to="result" params={this.getParams()}>View Result</Link>
       );
     }
   },
@@ -69,7 +70,7 @@ var Answer = React.createClass({
   getAnswers(index) {
     var answers = {};
 
-    if (this.state.poll.allowMultipleAnswer) {
+    if (this.state.poll.allowMultipleAnswers) {
       _.extend(answers, this.state.answers);
       answers[index] = !answers[index];
     }
