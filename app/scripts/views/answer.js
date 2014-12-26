@@ -20,8 +20,8 @@ var Answer = React.createClass({
     var { key } = this.getParams();
     return {
       key,
-      poll: Store.getPoll(key) || {},
-      answers: Store.getAnswers(key) || {}
+      poll: _.extend({ choices: [] }, Store.getPoll(key)),
+      answers: _.extend({}, Store.getAnswers(key))
     };
   },
 

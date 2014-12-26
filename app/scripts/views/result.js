@@ -18,15 +18,15 @@ var Result = React.createClass({
   getStateFromStore() {
     var { key } = this.getParams();
     return {
-      poll: Store.getPoll(key) || {},
+      poll: _.extend({ choices: [] }, Store.getPoll(key)),
       result: {}
-    }
+    };
   },
 
   getResultFromStore() {
     var { key } = this.getParams();
     Store.listenToResult(key, (data) => {
-      this.setState({ result: data });
+      this.setState({ result: data || {} });
     });
   },
 

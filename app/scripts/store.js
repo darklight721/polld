@@ -64,8 +64,7 @@ var Store = {
   },
 
   getAnswers(key) {
-    var answers = answersStore.getItem(key);
-    return answers ? JSON.parse(answers) : {};
+    return JSON.parse(answersStore.getItem(key));
   },
 
   setAnswers(key, answers) {
