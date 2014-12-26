@@ -21,8 +21,10 @@ var Home = React.createClass({
         <label htmlFor="question">Enter a question</label>
         <input id="question"
                type="text"
+               maxLength="200"
                value={this.state.question}
                onChange={this.handleQuestionChange}
+               onKeyPress={this.handleQuestionEnter}
                required/>
         <Choices list={this.state.choices} onChange={this.handleChoicesChange}/>
         <label>
@@ -31,17 +33,25 @@ var Home = React.createClass({
                  onChange={this.handleAllowMultipleAnswersChange}/>
           Allow multiple answers?
         </label>
-        <button onClick={this.save}>Done</button>
+        <button>Done</button>
       </form>
     );
   },
 
   handleSubmit(e) {
     e.preventDefault();
+
+    var key = Store.savePoll(this.state);
+    this.transitionTo('share', { key });
   },
 
   handleQuestionChange(e) {
     this.setState({ question: e.target.value });
+  },
+
+  handleQuestionEnter(e) {
+    if (e.which === 13)
+      e.preventDefault();
   },
 
   handleChoicesChange(choice, index) {
@@ -62,11 +72,6 @@ var Home = React.createClass({
 
   handleAllowMultipleAnswersChange() {
     this.setState({ allowMultipleAnswers: !this.state.allowMultipleAnswers });
-  },
-
-  save() {
-    var key = Store.savePoll(this.state);
-    this.transitionTo('share', { key });
   }
 });
 

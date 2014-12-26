@@ -28,9 +28,11 @@ var Choices = React.createClass({
       <li key={choice + index}>
         <input ref={index}
                type="text"
+               maxLength="100"
                defaultValue={choice}
                onBlur={this.handleChange.bind(this, index)}
-               onKeyPress={this.handleEnter.bind(this, index)}/>
+               onKeyPress={this.handleEnter.bind(this, index)}
+               required/>
         <button type="button" onClick={this.handleRemove.bind(this, index)}>&times;</button>
       </li>
     );
@@ -51,6 +53,7 @@ var Choices = React.createClass({
 
   handleEnter(index, e) {
     if (e.which !== 13) return;
+    e.preventDefault();
 
     var nextItem = this.refs[index + 1];
     nextItem ? focus(nextItem) : this.handleAdd();
