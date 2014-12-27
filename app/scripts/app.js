@@ -10,12 +10,7 @@ var React = window.React = require('react'),
 
 var App = React.createClass({
   render() {
-    return (
-      <div>
-        <h1>polld</h1>
-        <RouteHandler/>
-      </div>
-    );
+    return <RouteHandler/>;
   }
 });
 
