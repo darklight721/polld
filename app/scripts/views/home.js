@@ -17,11 +17,12 @@ var Home = React.createClass({
 
   render() {
     return (
-      <form onSubmit={this.handleSubmit}>
-        <label htmlFor="question">Enter a question</label>
-        <input id="question"
+      <form className="form" onSubmit={this.handleSubmit}>
+        <label>Title</label>
+        <input className="title"
                type="text"
                maxLength="200"
+               placeholder="Enter title here"
                value={this.state.question}
                onChange={this.handleQuestionChange}
                onKeyPress={this.handleQuestionEnter}

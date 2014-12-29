@@ -16,7 +16,7 @@ var Choices = React.createClass({
   render() {
     return (
       <div>
-        <label>Enter choices</label>
+        <label>Choices</label>
         <ul>{this.props.list.map(this.renderChoice)}</ul>
         <button type="button" onClick={this.handleAdd}>Add another choice</button>
       </div>
