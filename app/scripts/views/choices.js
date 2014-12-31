@@ -15,10 +15,12 @@ var Choices = React.createClass({
 
   render() {
     return (
-      <div>
+      <div className="choices">
         <label>Choices</label>
         <ul>{this.props.list.map(this.renderChoice)}</ul>
-        <button type="button" onClick={this.handleAdd}>Add another choice</button>
+        <button className="add-choice"
+                type="button"
+                onClick={this.handleAdd}>Add another choice</button>
       </div>
     );
   },
@@ -26,14 +28,18 @@ var Choices = React.createClass({
   renderChoice(choice, index) {
     return (
       <li key={choice + index}>
-        <input ref={index}
+        <input className="choice"
+               ref={index}
                type="text"
                maxLength="100"
+               placeholder="Enter choice here"
                defaultValue={choice}
                onBlur={this.handleChange.bind(this, index)}
                onKeyPress={this.handleEnter.bind(this, index)}
                required/>
-        <button type="button" onClick={this.handleRemove.bind(this, index)}>&times;</button>
+        <button className="remove-choice"
+                type="button"
+                onClick={this.handleRemove.bind(this, index)}>&times;</button>
       </li>
     );
   },

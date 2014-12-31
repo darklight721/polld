@@ -18,22 +18,29 @@ var Home = React.createClass({
   render() {
     return (
       <form className="form" onSubmit={this.handleSubmit}>
-        <label>Title</label>
-        <input className="title"
-               type="text"
-               maxLength="200"
-               placeholder="Enter title here"
-               value={this.state.question}
-               onChange={this.handleQuestionChange}
-               onKeyPress={this.handleQuestionEnter}
-               required/>
-        <Choices list={this.state.choices} onChange={this.handleChoicesChange}/>
-        <label>
-          <input type="checkbox"
-                 value={this.state.allowMultipleAnswers}
-                 onChange={this.handleAllowMultipleAnswersChange}/>
-          Allow multiple answers?
-        </label>
+        <legend>Create a poll</legend>
+        <div className="field">
+          <label>Title</label>
+          <input className="title"
+                 type="text"
+                 maxLength="200"
+                 placeholder="Enter title here"
+                 value={this.state.question}
+                 onChange={this.handleQuestionChange}
+                 onKeyPress={this.handleQuestionEnter}
+                 required/>
+        </div>
+        <div className="field">
+          <Choices list={this.state.choices} onChange={this.handleChoicesChange}/>
+        </div>
+        <div className="field">
+          <label className="checkbox">
+            <input type="checkbox"
+                   value={this.state.allowMultipleAnswers}
+                   onChange={this.handleAllowMultipleAnswersChange}/>
+            Allow multiple answers?
+          </label>
+        </div>
         <button>Done</button>
       </form>
     );
