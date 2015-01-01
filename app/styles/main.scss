@@ -1,110 +1,16 @@
-$bar-height: 50px;
-$container-padding-width: 10px;
-$container-padding-height: 5px;
-$bar-container-height: $bar-height - $container-padding-height * 2;
-$green-1: #8cc152;
-$green-2: #e7dd4b;
-$white: #fafafa;
-
-@font-face {
-  font-family: 'Bariol';
-  src: url('../fonts/Bariol_Regular.otf');
-  font-weight: normal;
-  font-style: normal;
-}
-
-html, body {
-  width: 100%;
-  height: 100%;
-  margin: 0;
-  padding: 0;
-}
+@import 'global';
+@import 'home';
 
 body {
   font-family: 'Bariol';
-  color: $green-1;
-  background-color: $white;
-}
-
-.container {
-  width: 100%;
-  max-width: 970px;
-  margin: auto;
-  padding: $container-padding-height $container-padding-width;
-}
-
-header, footer {
-  height: $bar-height;
-  font-size: 12px;
   letter-spacing: 1px;
-}
+  color: $white;
+  background-color: $green;
+  background-image: linear-gradient(135deg, $green 25%, $yellow 100%);
 
-.main {
-  position: relative;
-  height: calc(100% - #{$bar-height} * 2);
-  background-color: $green-1;
-  background-image: linear-gradient(135deg, $green-1 25%, $green-2 100%);
-}
-
-header {
-  $margin: 5px;
-  $border-size: 2px;
-  $header-line-height: $bar-container-height - $margin * 2;
-
-  .title {
-    display: inline-block;
-    margin: $margin;
-    padding: 0 8px;
-    line-height: $header-line-height - $border-size * 2;
-    font-size: 20px;
-    border: solid $border-size $green-1;
-    border-radius: 10px;
-    transition: all 0.5s;
-
-    &:hover {
-      color: $white;
-      background-color: $green-1;
-    }
+  & > * {
+    position: relative;
   }
-
-  .subtitle {
-    float: right;
-    margin: $margin;
-    line-height: $header-line-height / 2;
-    text-align: right;
-  }
-}
-
-footer {
-  line-height: $bar-container-height;
-  text-align: center;
-
-  a {
-    border-bottom: dashed 1px lighten($green-1, 25%);
-
-    &:hover {
-      border-bottom-style: solid;
-    }
-  }
-}
-
-* {
-  box-sizing: border-box;
-}
-
-a {
-  color: inherit;
-  text-decoration: none;
-}
-
-#app {
-  position: relative;
-  width: 100%;
-  height: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  overflow: auto;
 }
 
 .pattern {
@@ -113,35 +19,66 @@ a {
   height: 100%;
   top: 0;
   left: 0;
-  background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAQAAAAECAYAAACp8Z5+AAAAHElEQVQIW2N8//59vaCgYCMDFDDCGBgCMJUYKgBfXQgFSjqxOAAAAABJRU5ErkJggg==')
+  background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAQAAAAECAYAAACp8Z5+AAAAHElEQVQIW2N8//59vaCgYCMDFDDCGBgCMJUYKgBfXQgFSjqxOAAAAABJRU5ErkJggg==');
 }
 
-.form {
-  width: 80%;
+.container {
+  width: 100%;
+  max-width: 970px;
+  margin: auto;
+  padding: $container-padding;
+}
 
-  label {
-    display: block;
-    color: $white;
-    font-size: 12px;
-    text-transform: uppercase;
-    letter-spacing: 2px;
+header, footer {
+  height: $bar-height;
+  font-size: $font-small;
+}
+
+header {
+  background-image: linear-gradient(top, rgba(#000, 0.1), rgba(#000, 0));
+
+  h1 {
+    $border-size: 2px;
+
+    display: inline-block;
+    margin: 0;
+    padding: 0 8px;
+    border-radius: 10px;
+    line-height: $bar-container-height - $border-size * 2;
+    font-size: $font-medium;
+    @include link($white, $green, $border-size);
   }
 
-  input {
-    border: none;
-    outline: none;
+  p {
+    float: right;
+    display: inline-block;
+    line-height: $bar-container-height / 2;
+    text-align: right;
   }
+}
 
-  .title {
-    width: 100%;
-    font-size: 18px;
-    padding: 10px;
-    background-color: rgba($white, 0.3);
-    border-bottom: solid 2px $green-1;
-    transition: all 0.5s;
+footer {
+  background-image: linear-gradient(top, rgba(#000, 0), rgba(#000, 0.1));
+  line-height: $bar-container-height;
+  text-align: center;
 
-    &:focus, &:hover {
-      background-color: rgba($white, 0.6);
+  a {
+    border-bottom: dashed 1px lighten($green, 25%);
+
+    &:hover {
+      border-bottom-style: solid;
     }
   }
+}
+
+.main {
+  height: calc(100% - #{$bar-height} * 2);
+}
+
+#app {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }

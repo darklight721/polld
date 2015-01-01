@@ -1,0 +1,79 @@
+// colors
+$green: #8cc152;
+$yellow: #e7dd4b;
+$white: #fafafa;
+$red: #ed5565;
+$black: #656D78;
+
+// sizes
+$bar-height: 50px;
+$container-padding: 10px;
+$bar-container-height: $bar-height - $container-padding * 2;
+$font-small: 12px;
+$font-medium: 20px;
+$font-large: 28px;
+
+@font-face {
+  font-family: 'Bariol';
+  src: url('../fonts/Bariol_Regular.otf');
+  font-weight: normal;
+  font-style: normal;
+}
+
+// mixins
+@mixin transition($duration: 0.5s) {
+  transition: all $duration;
+}
+
+@mixin link($color, $hover-color, $border-size: 1px) {
+  color: $color;
+  background-color: transparent;
+  border: solid $border-size $color;
+  @include transition;
+
+  &:hover {
+    color: $hover-color;
+    background-color: $color;
+  }
+}
+
+// normalize
+html, body {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+p {
+  margin: 0;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+  outline: none;
+}
+
+button, input {
+  border: none;
+  outline: none;
+  font-family: inherit;
+}
+
+button {
+  cursor: pointer;
+}
+
+ul {
+  margin: 0;
+  padding: 0;
+
+  li {
+    list-style-type: none;
+  }
+}
