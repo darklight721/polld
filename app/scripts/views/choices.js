@@ -16,7 +16,7 @@ var Choices = React.createClass({
   render() {
     return (
       <div className="choices">
-        <label>Choices</label>
+        <label>Poll Choices</label>
         <ul>{this.props.list.map(this.renderChoice)}</ul>
         <button className="add-choice"
                 type="button"
@@ -39,6 +39,7 @@ var Choices = React.createClass({
                required/>
         <button className="remove-choice"
                 type="button"
+                tabIndex="-1"
                 onClick={this.handleRemove.bind(this, index)}>&times;</button>
       </li>
     );

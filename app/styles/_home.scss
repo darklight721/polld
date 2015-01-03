@@ -1,31 +1,20 @@
 .form {
-  width: 80%;
-
-  legend {
-    display: block;
-    width: 100%;
-    margin-bottom: 40px;
-    border-bottom: solid 1px $white;
-    font-size: $font-large;
-    text-transform: capitalize;
-    text-align: center;
-  }
+  $margin: 20px;
+  $input-padding: 10px;
 
   label {
-    display: block;
-    color: $white;
-    font-size: $font-small;
-    text-transform: uppercase;
-    letter-spacing: 2px;
+    @extend %label;
   }
 
   input {
-    padding: 10px;
-    border-radius: 3px;
+    @include transition;
+
+    margin: 0;
+    padding: $input-padding;
+    border-radius: $global-radius;
     background-color: rgba($white, 0.8);
     color: $black;
     font-size: $font-medium;
-    @include transition;
 
     &:focus, &:hover {
       background-color: rgba($white, 1);
@@ -33,7 +22,7 @@
   }
 
   .field {
-    margin-bottom: 20px;
+    margin-bottom: $margin;
   }
 
   .title {
@@ -42,55 +31,64 @@
 
   .choices {
     ul li {
-      $margin: 10px;
+      $choice-margin: $margin / 2;
 
       position: relative;
       display: inline-block;
-      width: calc(50% - #{$margin / 2});
-      margin: 0 $margin $margin 0;
+      width: calc(50% - #{$choice-margin / 2});
+      margin: 0 $choice-margin $choice-margin 0;
 
       &:nth-child(even) {
         margin-right: 0;
       }
     }
+  }
 
-    .choice {
-      width: 100%;
-      padding-right: 30px;
+  .choice {
+    width: 100%;
+    padding-right: 30px;
 
-      &:focus, &:hover {
-        & + .remove-choice {
-          opacity: 1;
-        }
-      }
-    }
-
-    .remove-choice {
-      position: absolute;
-      top: 10px;
-      right: 5px;
-      width: 20px;
-      height: 20px;
-      padding: 0;
-      background-color: transparent;
-      border: solid 1px $red;
-      text-align: center;
-      border-radius: 50%;
-      color: $red;
-      font-size: 16px;
-      line-height: 15px;
-      opacity: 0.75;
-      transition: all 0.5s;
-
-      &:hover {
+    &:focus, &:hover {
+      & + .remove-choice {
         opacity: 1;
-        background-color: $red;
-        color: $white;
       }
     }
+  }
 
-    .add-choice {
+  .remove-choice {
+    @include link($red, $white);
 
+    position: absolute;
+    top: 0;
+    right: 0;
+    margin: 0;
+    padding: $input-padding;
+    border-radius: 0 $global-radius $global-radius 0;
+    font-size: $font-medium;
+    opacity: 0.6;
+
+    &:hover {
+      opacity: 1;
     }
+  }
+
+  .add-choice {
+    @extend %link;
+  }
+
+  .multiple-answers {
+    text-transform: none;
+
+    input {
+      margin-right: 5px;
+    }
+  }
+
+  .form-actions {
+    text-align: center;
+  }
+
+  button[type="submit"] {
+    @extend %link-primary;
   }
 }

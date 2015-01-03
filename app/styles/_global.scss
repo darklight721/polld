@@ -3,38 +3,62 @@ $green: #8cc152;
 $yellow: #e7dd4b;
 $white: #fafafa;
 $red: #ed5565;
-$black: #656D78;
+$black: #656d78;
+$blue: #4fc1e9;
 
 // sizes
 $bar-height: 50px;
-$container-padding: 10px;
-$bar-container-height: $bar-height - $container-padding * 2;
 $font-small: 12px;
 $font-medium: 20px;
 $font-large: 28px;
-
-@font-face {
-  font-family: 'Bariol';
-  src: url('../fonts/Bariol_Regular.otf');
-  font-weight: normal;
-  font-style: normal;
-}
+$global-radius: 3px;
 
 // mixins
 @mixin transition($duration: 0.5s) {
   transition: all $duration;
 }
 
-@mixin link($color, $hover-color, $border-size: 1px) {
+@mixin link($color, $hover-color, $border-size: null) {
+  @include transition;
+
+  padding: 8px 10px;
   color: $color;
   background-color: transparent;
-  border: solid $border-size $color;
-  @include transition;
+
+  @if $border-size {
+    border: solid $border-size $color;
+    border-radius: $global-radius;
+  }
 
   &:hover {
     color: $hover-color;
     background-color: $color;
   }
+}
+
+// classes
+%center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+%label {
+  display: block;
+  padding-bottom: 5px;
+  font-size: $font-small;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+
+%link {
+  @include link($white, $green, 1px);
+  font-size: $font-small;
+}
+
+%link-primary {
+  @include link($white, $green, 2px);
+  font-size: $font-medium;
 }
 
 // normalize
@@ -66,6 +90,7 @@ button, input {
 }
 
 button {
+  letter-spacing: inherit;
   cursor: pointer;
 }
 

@@ -18,9 +18,8 @@ var Home = React.createClass({
   render() {
     return (
       <form className="form" onSubmit={this.handleSubmit}>
-        <legend>Create a poll</legend>
         <div className="field">
-          <label>Title</label>
+          <label>Poll Title</label>
           <input className="title"
                  type="text"
                  maxLength="200"
@@ -34,14 +33,16 @@ var Home = React.createClass({
           <Choices list={this.state.choices} onChange={this.handleChoicesChange}/>
         </div>
         <div className="field">
-          <label className="checkbox">
+          <label className="multiple-answers">
             <input type="checkbox"
                    value={this.state.allowMultipleAnswers}
                    onChange={this.handleAllowMultipleAnswersChange}/>
             Allow multiple answers?
           </label>
         </div>
-        <button>Done</button>
+        <div className="form-actions">
+          <button type="submit">Create poll</button>
+        </div>
       </form>
     );
   },
