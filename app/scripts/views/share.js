@@ -20,11 +20,19 @@ var Share = React.createClass({
         url = getUrl(params.key);
 
     return (
-      <div>
-        Link:
-        <span>{url}</span>
-        <Link to="answer" params={params}>Answer</Link>
-        <Link to="result" params={params}>Result</Link>
+      <div className="share">
+        <label>Let others answer this poll. Share the link below.</label>
+        <input type="text" value={url} readOnly/>
+        <ul>
+          <li><a href="#"><i className="icon-clipboard"></i></a></li>
+          <li><a href="#"><i className="icon-mail"></i></a></li>
+          <li><a href="#" target="_blank"><i className="icon-facebook"></i></a></li>
+          <li><a href="#" target="_blank"><i className="icon-twitter"></i></a></li>
+        </ul>
+        <nav>
+          <Link to="answer" params={params}>Answer poll</Link>
+          <Link to="result" params={params}>View result</Link>
+        </nav>
       </div>
     );
   }

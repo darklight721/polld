@@ -61,6 +61,21 @@ $global-radius: 3px;
   font-size: $font-medium;
 }
 
+%input {
+  @include transition;
+
+  margin: 0;
+  padding: 10px;
+  border-radius: $global-radius;
+  background-color: rgba($white, 0.8);
+  color: $black;
+  font-size: $font-medium;
+
+  &:focus, &:hover {
+    background-color: rgba($white, 1);
+  }
+}
+
 // normalize
 html, body {
   width: 100%;

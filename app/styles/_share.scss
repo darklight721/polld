@@ -1,0 +1,39 @@
+.share {
+  $margin: 10px;
+
+  label {
+    @extend %label;
+    text-transform: none;
+  }
+
+  input {
+    @extend %input;
+
+    width: 100%;
+    margin-bottom: $margin;
+  }
+
+  ul li {
+    display: inline-block;
+    margin: 0 $margin $margin 0;
+
+    a {
+      @extend %link-primary;
+
+      display: block;
+      width: 50px;
+      text-align: center;
+    }
+  }
+
+  nav {
+    margin-top: $margin * 2;
+
+    a {
+      @extend %link;
+
+      display: inline-block;
+      margin: 0 $margin 0 0;
+    }
+  }
+}

@@ -1,24 +1,12 @@
 .form {
   $margin: 20px;
-  $input-padding: 10px;
 
   label {
     @extend %label;
   }
 
   input {
-    @include transition;
-
-    margin: 0;
-    padding: $input-padding;
-    border-radius: $global-radius;
-    background-color: rgba($white, 0.8);
-    color: $black;
-    font-size: $font-medium;
-
-    &:focus, &:hover {
-      background-color: rgba($white, 1);
-    }
+    @extend %input;
   }
 
   .field {
@@ -62,7 +50,7 @@
     top: 0;
     right: 0;
     margin: 0;
-    padding: $input-padding;
+    padding: 10px;
     border-radius: 0 $global-radius $global-radius 0;
     font-size: $font-medium;
     opacity: 0.6;
