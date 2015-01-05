@@ -16,10 +16,13 @@ var Share = React.createClass({
   },
 
   getStateFromStore() {
-    var { key } = this.getParams();
-    return {
-      poll: Store.getPoll(key) || {}
-    };
+    var { key } = this.getParams(),
+          poll = Store.getPoll(key) || {},
+          subject = getSubject(poll.question),
+          url = getUrl(key),
+          encUrl = encode(url);
+
+    return { poll, subject, url, encUrl };
   },
 
   getInitialState() {
@@ -31,17 +34,17 @@ var Share = React.createClass({
   },
 
   render() {
-    var params = this.getParams(),
-        url = getUrl(params.key);
+    var params = this.getParams();
 
     return (
       <div className="share">
         <label>Let others answer this poll. Share the link below.</label>
-        <input ref="url" type="text" value={url} onClick={this.selectUrl} readOnly/>
+        <input ref="url" type="text" value={this.state.url} onClick={this.selectUrl} readOnly/>
         <ul>
-          <li>{this.renderMailLink(url)}</li>
-          <li>{this.renderFacebookLink(url)}</li>
-          <li>{this.renderTwitterLink(url)}</li>
+          <li>{this.renderMailLink()}</li>
+          <li>{this.renderFacebookLink()}</li>
+          <li>{this.renderTwitterLink()}</li>
+          <li>{this.renderGooglePlusLink()}</li>
         </ul>
         <nav>
           <Link to="answer" params={params}>Answer poll</Link>
@@ -51,11 +54,11 @@ var Share = React.createClass({
     );
   },
 
-  renderMailLink(url) {
-    var encSubject = encode(this.getSubject()),
+  renderMailLink() {
+    var encSubject = encode(this.state.subject),
         encBody = encode(`${this.state.poll.question}\n\n` +
                          `Answer this poll at:\n` +
-                         `${url}`),
+                         `${this.state.url}`),
         href = `mailto:?subject=${encSubject}&body=${encBody}`;
 
     return (
@@ -63,44 +66,50 @@ var Share = React.createClass({
     );
   },
 
-  renderFacebookLink(url) {
-    var encUrl = encode(url),
-        href = `https://www.facebook.com/sharer/sharer.php?u=${encUrl}`;
+  renderFacebookLink() {
+    var href = `https://www.facebook.com/sharer/sharer.php?u=${this.state.encUrl}`;
 
     return (
       <a href={href} target="_blank"><i className="icon-facebook"></i></a>
     );
   },
 
-  renderTwitterLink(url) {
-    var encUrl = encode(url),
-        encText = encode(truncate(this.getSubject(), 90)),
-        href = `https://twitter.com/share?url=${encUrl}&text=${encText}`;
+  renderTwitterLink() {
+    var encText = encode(truncate(this.state.subject, 90)),
+        href = `https://twitter.com/share?url=${this.state.encUrl}&text=${encText}`;
 
     return (
       <a href={href} target="_blank"><i className="icon-twitter"></i></a>
     );
   },
 
-  selectUrl() {
-    this.refs.url.getDOMNode().select();
+  renderGooglePlusLink() {
+    var href = `https://plus.google.com/share?url=${this.state.encUrl}`;
+
+    return (
+      <a href={href} target="_blank"><i className="icon-google-plus"></i></a>
+    );
   },
 
-  getSubject() {
-    return `Poll: ${this.state.poll.question}`;
+  selectUrl() {
+    this.refs.url.getDOMNode().select();
   }
 });
+
+function getSubject(question) {
+  return `Poll: ${question}`;
+}
 
 function getUrl(key) {
   return `${window.location.origin}/#/${key}`;
 }
 
-function encode(string) {
-  return encodeURIComponent(string);
+function encode(text) {
+  return encodeURIComponent(text);
 }
 
-function truncate(string, length) {
-  return string.length > length ? string.substr(0, length) + '...' : string;
+function truncate(text, length) {
+  return text.length > length ? text.substr(0, length) + '...' : text;
 }
 
 module.exports = Share;
