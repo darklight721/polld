@@ -9,7 +9,7 @@ var Choices = React.createClass({
   componentDidUpdate() {
     if (!this.shouldFocusLast) return;
 
-    focus(this.refs[this.props.list.length - 1]);
+    this.focus(this.props.list.length - 1);
     this.shouldFocusLast = false;
   },
 
@@ -62,13 +62,16 @@ var Choices = React.createClass({
     if (e.which !== 13) return;
     e.preventDefault();
 
-    var nextItem = this.refs[index + 1];
-    nextItem ? focus(nextItem) : this.handleAdd();
+    if (index + 1 === this.props.list.length)
+      this.handleAdd();
+    else
+      this.focus(index + 1);
+  },
+
+  focus(index) {
+    var ref = this.refs[index];
+    ref && ref.getDOMNode().focus();
   }
 });
-
-function focus(ref) {
-  ref.getDOMNode().focus();
-}
 
 module.exports = Choices;

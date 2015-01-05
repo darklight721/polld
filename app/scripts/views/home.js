@@ -30,7 +30,9 @@ var Home = React.createClass({
                  required/>
         </div>
         <div className="field">
-          <Choices list={this.state.choices} onChange={this.handleChoicesChange}/>
+          <Choices ref="choices"
+                   list={this.state.choices}
+                   onChange={this.handleChoicesChange}/>
         </div>
         <div className="field">
           <label className="multiple-answers">
@@ -59,8 +61,10 @@ var Home = React.createClass({
   },
 
   handleQuestionEnter(e) {
-    if (e.which === 13)
-      e.preventDefault();
+    if (e.which !== 13) return;
+
+    e.preventDefault();
+    this.refs.choices.focus(0);
   },
 
   handleChoicesChange(choice, index) {
