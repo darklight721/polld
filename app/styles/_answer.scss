@@ -1,0 +1,26 @@
+.answer {
+  text-align: center;
+
+  h2 {
+    font-size: $font-medium;
+    margin: 0 0 20px 0;
+  }
+
+  ul li {
+    @extend %two-col-list;
+  }
+
+  button {
+    @extend %link-primary;
+    width: 100%;
+
+    &.active {
+      color: $green;
+      background-color: $white;
+    }
+  }
+
+  nav {
+    @extend %nav;
+  }
+}

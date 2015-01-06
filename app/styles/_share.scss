@@ -27,13 +27,6 @@
   }
 
   nav {
-    margin-top: $margin * 2;
-
-    a {
-      @extend %link;
-
-      display: inline-block;
-      margin: 0 $margin 0 0;
-    }
+    @extend %nav;
   }
 }

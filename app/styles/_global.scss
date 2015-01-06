@@ -76,6 +76,29 @@ $global-radius: 3px;
   }
 }
 
+%two-col-list {
+  display: inline-block;
+  width: calc(50% - 5px);
+  margin: 0 0 10px 10px;
+
+  &:nth-child(odd) {
+    margin-left: 0;
+  }
+}
+
+%nav {
+  margin-top: 40px;
+
+  a {
+    @extend %link;
+    display: inline-block;
+
+    & + a {
+      margin-left: 10px;
+    }
+  }
+}
+
 // normalize
 html, body {
   width: 100%;

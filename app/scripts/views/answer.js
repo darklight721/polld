@@ -35,10 +35,13 @@ var Answer = React.createClass({
 
   render() {
     return (
-      <div>
-        {this.state.poll.question}
+      <div className="answer">
+        <h2>{this.state.poll.question}</h2>
         <ul>{this.state.poll.choices.map(this.renderChoice)}</ul>
-        {this.renderResultLink()}
+        <nav>
+          <Link to="share" params={this.getParams()}>Share</Link>
+          {this.renderResultLink()}
+        </nav>
       </div>
     );
   },
@@ -55,7 +58,7 @@ var Answer = React.createClass({
   renderResultLink() {
     if (!_.isEmpty(this.state.answers)) {
       return (
-        <Link to="result" params={this.getParams()}>View Result</Link>
+        <Link to="result" params={this.getParams()}>View result</Link>
       );
     }
   },

@@ -19,16 +19,8 @@
 
   .choices {
     ul li {
-      $choice-margin: $margin / 2;
-
+      @extend %two-col-list;
       position: relative;
-      display: inline-block;
-      width: calc(50% - #{$choice-margin / 2});
-      margin: 0 $choice-margin $choice-margin 0;
-
-      &:nth-child(even) {
-        margin-right: 0;
-      }
     }
   }
 
