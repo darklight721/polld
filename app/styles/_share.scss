@@ -1,4 +1,5 @@
 .share {
+  @extend %page;
   $margin: 10px;
 
   label {
@@ -11,22 +12,22 @@
 
     width: 100%;
     margin-bottom: $margin;
+    text-align: center;
   }
 
   ul li {
     display: inline-block;
-    margin: 0 $margin $margin 0;
+    margin: 0 0 $margin 0;
+
+    & + li {
+      margin-left: $margin;
+    }
 
     a {
       @extend %link-primary;
 
       display: block;
       width: 50px;
-      text-align: center;
     }
-  }
-
-  nav {
-    @extend %nav;
   }
 }

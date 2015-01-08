@@ -38,6 +38,7 @@ var Share = React.createClass({
 
     return (
       <div className="share">
+        <h2>{this.state.poll.question}</h2>
         <label>Let others answer this poll. Share the link below.</label>
         <input ref="url" type="text" value={this.state.url} onClick={this.selectUrl} readOnly/>
         <ul>

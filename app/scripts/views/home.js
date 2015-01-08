@@ -43,7 +43,7 @@ var Home = React.createClass({
           </label>
         </div>
         <div className="form-actions">
-          <button type="submit">Create poll</button>
+          <button>Create poll</button>
         </div>
       </form>
     );

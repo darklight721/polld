@@ -1,5 +1,6 @@
 var React = require('react'),
     Router = require('react-router'),
+  { Link } = Router,
     Store = require('../store'),
     _ = require('underscore');
 
@@ -48,10 +49,16 @@ var Result = React.createClass({
   },
 
   render() {
+    var params = this.getParams();
+
     return (
-      <div>
-        {this.state.poll.question}
+      <div className="result">
+        <h2>{this.state.poll.question}</h2>
         {this.renderResult()}
+        <nav>
+          <Link to="answer" params={params}>Answer poll</Link>
+          <Link to="share" params={params}>Share</Link>
+        </nav>
       </div>
     );
   },

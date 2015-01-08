@@ -1,10 +1,5 @@
 .answer {
-  text-align: center;
-
-  h2 {
-    font-size: $font-medium;
-    margin: 0 0 20px 0;
-  }
+  @extend %page;
 
   ul li {
     @extend %two-col-list;
@@ -18,9 +13,5 @@
       color: $green;
       background-color: $white;
     }
-  }
-
-  nav {
-    @extend %nav;
   }
 }

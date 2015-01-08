@@ -34,13 +34,15 @@ var Answer = React.createClass({
   },
 
   render() {
+    var params = this.getParams();
+
     return (
       <div className="answer">
         <h2>{this.state.poll.question}</h2>
         <ul>{this.state.poll.choices.map(this.renderChoice)}</ul>
         <nav>
-          <Link to="share" params={this.getParams()}>Share</Link>
-          {this.renderResultLink()}
+          <Link to="share" params={params}>Share</Link>
+          <Link to="result" params={params}>View result</Link>
         </nav>
       </div>
     );
@@ -53,14 +55,6 @@ var Answer = React.createClass({
                 onClick={this.answer.bind(this, index)}>{choice}</button>
       </li>
     );
-  },
-
-  renderResultLink() {
-    if (!_.isEmpty(this.state.answers)) {
-      return (
-        <Link to="result" params={this.getParams()}>View result</Link>
-      );
-    }
   },
 
   answer(index) {

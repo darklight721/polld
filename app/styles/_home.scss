@@ -66,9 +66,9 @@
 
   .form-actions {
     text-align: center;
-  }
 
-  button[type="submit"] {
-    @extend %link-primary;
+    button {
+      @extend %link-primary;
+    }
   }
 }
