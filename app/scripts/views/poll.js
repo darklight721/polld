@@ -16,22 +16,31 @@ var Poll = React.createClass({
     }
   },
 
+  getInitialState() {
+    return {
+      navs: [{ route: 'share', title: 'Share' },
+             { route: 'answer', title: 'Answer poll' },
+             { route: 'result', title: 'View result' }]
+    };
+  },
+
   render() {
-    var params = this.getParams(),
-        pollId = params.pollId,
-        poll = _.extend({ choices: [] }, Store.getPoll(pollId)),
-        props = { pollId, poll };
+    var { pollId } = this.getParams(),
+          poll = _.extend({ choices: [] }, Store.getPoll(pollId)),
+          props = { pollId, poll };
 
     return (
       <div className="poll">
         <h2>{poll.question}</h2>
         <RouteHandler {...props}/>
-        <nav>
-          <Link to="share" params={params}>Share</Link>
-          <Link to="poll" params={params}>Answer poll</Link>
-          <Link to="result" params={params}>View result</Link>
-        </nav>
+        <nav>{this.state.navs.map(this.renderNav)}</nav>
       </div>
+    );
+  },
+
+  renderNav(nav, index) {
+    return (
+      <Link to={nav.route} params={this.getParams()} key={index}>{nav.title}</Link>
     );
   }
 });
