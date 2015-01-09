@@ -1,0 +1,22 @@
+.poll {
+  text-align: center;
+
+  h2 {
+    font-size: $font-medium;
+    margin: 0 0 20px 0;
+  }
+
+  nav {
+    margin-top: 40px;
+
+    a {
+      @extend %link;
+      display: inline-block;
+      min-width: 100px;
+
+      & + a {
+        margin-left: 10px;
+      }
+    }
+  }
+}

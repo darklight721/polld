@@ -1,49 +1,35 @@
 var React = require('react'),
-    Router = require('react-router'),
-  { Link } = Router,
     Store = require('../store'),
     _ = require('underscore');
 
 var Answer = React.createClass({
-  mixins: [ Router.State ],
-
-  statics: {
-    willTransitionTo(transition, params) {
-      transition.wait(
-        Store.fetchPoll(params.key)
-             .then((data) => !data && transition.redirect('404'))
-      );
-    }
+  propTypes: {
+    pollId: React.PropTypes.string.isRequired,
+    poll: React.PropTypes.object.isRequired
   },
 
-  getStateFromStore() {
-    var { key } = this.getParams();
-    return {
-      key,
-      poll: _.extend({ choices: [] }, Store.getPoll(key)),
-      answers: _.extend({}, Store.getAnswers(key))
-    };
+  setAnswers(props) {
+    this.setState({
+      answers: _.extend({}, Store.getAnswers(props.pollId))
+    });
   },
 
   getInitialState() {
-    return this.getStateFromStore();
+    return { answers: {} };
   },
 
-  componentWillReceiveProps() {
-    this.setState(this.getStateFromStore());
+  componentWillMount() {
+    this.setAnswers(this.props);
+  },
+
+  componentWillReceiveProps(props) {
+    this.setAnswers(props);
   },
 
   render() {
-    var params = this.getParams();
-
     return (
       <div className="answer">
-        <h2>{this.state.poll.question}</h2>
-        <ul>{this.state.poll.choices.map(this.renderChoice)}</ul>
-        <nav>
-          <Link to="share" params={params}>Share</Link>
-          <Link to="result" params={params}>View result</Link>
-        </nav>
+        <ul>{this.props.poll.choices.map(this.renderChoice)}</ul>
       </div>
     );
   },
@@ -60,14 +46,14 @@ var Answer = React.createClass({
   answer(index) {
     var answers = this.getAnswers(index);
 
-    Store.answerPoll(this.state.key, answers);
+    Store.answerPoll(this.props.pollId, answers);
     this.setState({ answers });
   },
 
   getAnswers(index) {
     var answers = {};
 
-    if (this.state.poll.allowMultipleAnswers) {
+    if (this.props.poll.allowMultipleAnswers) {
       _.extend(answers, this.state.answers);
       answers[index] = !answers[index];
     }

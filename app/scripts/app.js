@@ -19,7 +19,7 @@ var routes = (
   <Route name="app" path="/" handler={App}>
     <DefaultRoute handler={Home}/>
     <Route name="404" handler={NotFound}/>
-    <Route name="poll" path=":key" handler={Poll}/>
+    <Route name="poll" path=":pollId" handler={Poll}>
       <DefaultRoute handler={Answer}/>
       <Route name="share" handler={Share}/>
       <Route name="result" handler={Result}/>
