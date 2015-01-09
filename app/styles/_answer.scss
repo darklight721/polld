@@ -1,6 +1,4 @@
 .answer {
-  @extend %page;
-
   ul li {
     @extend %two-col-list;
   }

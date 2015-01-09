@@ -1,83 +1,52 @@
 var React = require('react'),
-    Router = require('react-router'),
-  { Link } = Router,
     Store = require('../store'),
     _ = require('underscore');
 
 var Result = React.createClass({
-  mixins: [ Router.State ],
-
-  statics: {
-    willTransitionTo(transition, params) {
-      transition.wait(
-        Store.fetchPoll(params.key)
-             .then((data) => !data && transition.redirect('404'))
-      );
-    }
+  propTypes: {
+    pollId: React.PropTypes.string.isRequired,
+    poll: React.PropTypes.object.isRequired
   },
 
-  getStateFromStore() {
-    var { key } = this.getParams();
-    return {
-      poll: _.extend({ choices: [] }, Store.getPoll(key)),
-      result: {}
-    };
-  },
-
-  getResultFromStore() {
-    var { key } = this.getParams();
-    Store.listenToResult(key, (data) => {
+  setResult(props) {
+    Store.listenToResult(props.pollId, (data) => {
       this.setState({ result: data || {} });
     });
   },
 
   getInitialState() {
-    return this.getStateFromStore();
-  },
-
-  componentWillReceiveProps() {
-    this.setState(this.getStateFromStore());
-    this.getResultFromStore();
+    return { result: {} };
   },
 
   componentWillMount() {
-    this.getResultFromStore();
+    this.setResult(this.props);
   },
 
   componentWillUnmount() {
     Store.stopListeningToResult();
   },
 
+  componentWillReceiveProps(props) {
+    this.setResult(props);
+  },
+
   render() {
-    var params = this.getParams();
+    var choices = this.getChoicesWithResult();
 
     return (
       <div className="result">
-        <h2>{this.state.poll.question}</h2>
-        {this.renderResult()}
-        <nav>
-          <Link to="answer" params={params}>Answer poll</Link>
-          <Link to="share" params={params}>Share</Link>
-        </nav>
+        <ul>{choices.map(this.renderResult)}</ul>
       </div>
     );
   },
 
-  renderResult() {
-    var choices = this.getChoicesWithResult();
-
-    return (
-      <ul>{
-        choices.map((choice, index) => {
-          return <li key={index}>{`${choice.name} - ${choice.result}`}</li>;
-        })
-      }</ul>
-    );
+  renderResult(choice, index) {
+    return <li key={index}>{`${choice.name} - ${choice.result}`}</li>;
   },
 
   getChoicesWithResult() {
     var result = this.state.result;
-    return _.chain(this.state.poll.choices)
+    return _.chain(this.props.poll.choices)
             .map((name, index) => {
               return { name, result: result[index] || 0 } })
             .sortBy('result')

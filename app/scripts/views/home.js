@@ -52,8 +52,8 @@ var Home = React.createClass({
   handleSubmit(e) {
     e.preventDefault();
 
-    var key = Store.savePoll(this.state);
-    this.transitionTo('share', { key });
+    var pollId = Store.savePoll(this.state);
+    this.transitionTo('share', { pollId });
   },
 
   handleQuestionChange(e) {
