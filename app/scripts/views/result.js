@@ -42,8 +42,8 @@ var Result = React.createClass({
   },
 
   renderResult(choice, index) {
-    var percentage = this.state.total ?
-                     choice.result / this.state.total * 100 : 0;
+    var percentage = this.state.total === 0 ? 0 :
+                     choice.result / this.state.total * 100,
         style = { width: `${percentage}%` };
 
     return (
