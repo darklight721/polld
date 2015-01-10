@@ -1,5 +1,4 @@
-var React = require('react'),
-    Store = require('../store');
+var React = require('react');
 
 var Share = React.createClass({
   propTypes: {

@@ -1,5 +1,5 @@
 var React = require('react'),
-    Store = require('../store'),
+  { Answers } = require('../store'),
     _ = require('underscore');
 
 var Answer = React.createClass({
@@ -10,7 +10,7 @@ var Answer = React.createClass({
 
   setAnswers(props) {
     this.setState({
-      answers: _.extend({}, Store.getAnswers(props.pollId))
+      answers: _.extend({}, Answers.get(props.pollId))
     });
   },
 
@@ -46,7 +46,7 @@ var Answer = React.createClass({
   answer(index) {
     var answers = this.getAnswers(index);
 
-    Store.answerPoll(this.props.pollId, answers);
+    Answers.set(this.props.pollId, answers);
     this.setState({ answers });
   },
 

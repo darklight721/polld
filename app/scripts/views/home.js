@@ -1,7 +1,7 @@
 var React = require('react'),
     Router = require('react-router'),
     Choices = require('./choices'),
-    Store = require('../store'),
+  { Polls } = require('../store'),
     _ = require('underscore');
 
 var Home = React.createClass({
@@ -52,7 +52,7 @@ var Home = React.createClass({
   handleSubmit(e) {
     e.preventDefault();
 
-    var pollId = Store.savePoll(this.state);
+    var pollId = Polls.create(this.state);
     this.transitionTo('share', { pollId });
   },
 

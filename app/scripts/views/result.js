@@ -1,5 +1,5 @@
 var React = require('react'),
-    Store = require('../store'),
+  { Results } = require('../store'),
     _ = require('underscore');
 
 var Result = React.createClass({
@@ -9,7 +9,7 @@ var Result = React.createClass({
   },
 
   setResult(props) {
-    Store.listenToResult(props.pollId, (data) => {
+    Results.listen(props.pollId, (data) => {
       this.setState({ result: data || {} });
     });
   },
@@ -23,7 +23,7 @@ var Result = React.createClass({
   },
 
   componentWillUnmount() {
-    Store.stopListeningToResult();
+    Results.stop();
   },
 
   componentWillReceiveProps(props) {

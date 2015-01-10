@@ -1,7 +1,7 @@
 var React = require('react'),
     Router = require('react-router'),
   { RouteHandler, Link } = Router,
-    Store = require('../store'),
+  { Polls } = require('../store'),
     _ = require('underscore');
 
 var Poll = React.createClass({
@@ -10,7 +10,7 @@ var Poll = React.createClass({
   statics: {
     willTransitionTo(transition, params) {
       transition.wait(
-        Store.fetchPoll(params.pollId)
+        Polls.fetch(params.pollId)
              .then((data) => !data && transition.redirect('404'))
       );
     }
@@ -26,7 +26,7 @@ var Poll = React.createClass({
 
   render() {
     var { pollId } = this.getParams(),
-          poll = _.extend({ choices: [] }, Store.getPoll(pollId)),
+          poll = _.extend({ choices: [] }, Polls.get(pollId)),
           props = { pollId, poll };
 
     return (

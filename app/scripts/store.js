@@ -1,42 +1,61 @@
 var Firebase = require('firebase'),
     Promise = require('promise'),
     _ = require('underscore'),
-    rootRef = new Firebase('https://darksmint.firebaseio.com/'),
-    pollsRef = rootRef.child('polls'),
-    answersRef = rootRef.child('answers'),
-    pollsStore = {},
-    answersStore = window.localStorage,
-    resultRef = null;
+    rootRef = new Firebase('https://darksmint.firebaseio.com/');
 
-var Store = {
-  savePoll(data) {
-    var key = pollsRef.push(data).key();
-    this.setPoll(key, data);
+var Memory = {
+  store: {},
+  set(key, value) { this.store[key] = value },
+  get(key) { return this.store[key] }
+};
+
+var Local = {
+  store: window.localStorage,
+  set(key, value) { this.store.setItem(key, JSON.stringify(value)) },
+  get(key) { return JSON.parse(this.store.getItem(key)) }
+};
+
+var Polls = {
+  ref: rootRef.child('polls'),
+  store: Memory,
+
+  create(poll) {
+    var key = this.ref.push(poll).key();
+    this.store.set(key, poll);
     return key;
   },
 
-  fetchPoll(key) {
+  fetch(key) {
     return new Promise((resolve, reject) => {
-      var poll = this.getPoll(key);
+      var poll = this.get(key);
 
       if (poll) {
         resolve(poll);
       }
       else {
-        pollsRef.child(key).once(
-          'value',
-          (snapshot) => resolve(this.setPoll(key, snapshot.val())),
-          reject
-        );
+        this.ref.child(key).once('value', (snapshot) => {
+          var poll = snapshot.val();
+          this.store.set(key, poll);
+          resolve(poll);
+        }, reject);
       }
     });
   },
 
-  answerPoll(key, answers) {
-    var pollAnswersRef = answersRef.child(key),
-        previousAnswers = this.getAnswers(key);
+  get(key) {
+    return this.store.get(key);
+  }
+};
 
-    pollAnswersRef.transaction((currentData) => {
+var Answers = {
+  ref: rootRef.child('answers'),
+  store: Local,
+
+  set(key, answers) {
+    var answersRef = this.ref.child(key),
+        previousAnswers = this.get(key);
+
+    answersRef.transaction((currentData) => {
       currentData = currentData || {};
 
       _.each(previousAnswers, (value, index) => {
@@ -52,38 +71,30 @@ var Store = {
       return currentData;
     });
 
-    this.setAnswers(key, answers);
+    this.store.set(key, answers);
   },
 
-  getPoll(key) {
-    return pollsStore[key];
-  },
-
-  setPoll(key, data) {
-    return (pollsStore[key] = data);
-  },
-
-  getAnswers(key) {
-    return JSON.parse(answersStore.getItem(key));
-  },
-
-  setAnswers(key, answers) {
-    answersStore.setItem(key, JSON.stringify(answers));
-  },
-
-  listenToResult(key, callback) {
-    this.stopListeningToResult();
-
-    resultRef = answersRef.child(key);
-    resultRef.on('value', (snapshot) => callback(snapshot.val()));
-  },
-
-  stopListeningToResult() {
-    if (resultRef) {
-      resultRef.off('value');
-      resultRef = null;
-    }
+  get(key) {
+    return this.store.get(key);
   }
 };
 
-module.exports = Store;
+var Results = {
+  ref: null,
+
+  listen(key, callback) {
+    this.stop();
+
+    this.ref = Answers.ref.child(key);
+    this.ref.on('value', (snapshot) => callback(snapshot.val()));
+  },
+
+  stop() {
+    if (!this.ref) return;
+
+    this.ref.off('value');
+    this.ref = null;
+  }
+};
+
+module.exports = { Polls, Answers, Results };
