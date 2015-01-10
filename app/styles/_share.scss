@@ -1,6 +1,4 @@
 .share {
-  $margin: 10px;
-
   label {
     @extend %label;
     text-transform: none;
@@ -10,17 +8,13 @@
     @extend %input;
 
     width: 100%;
-    margin-bottom: $margin;
+    margin-bottom: 10px;
     text-align: center;
   }
 
   ul li {
     display: inline-block;
-    margin: 0 0 $margin 0;
-
-    & + li {
-      margin-left: $margin;
-    }
+    margin: 0 5px;
 
     a {
       @extend %link-primary;

@@ -10,7 +10,8 @@ var Result = React.createClass({
 
   setResult(props) {
     Results.listen(props.pollId, (data) => {
-      this.setState({ result: data || {} });
+      var result = data || {};
+      this.setState({ result, total: _.reduce(result, sum, 0) });
     });
   },
 
@@ -41,7 +42,17 @@ var Result = React.createClass({
   },
 
   renderResult(choice, index) {
-    return <li key={index}>{`${choice.name} - ${choice.result}`}</li>;
+    var percentage = this.state.total ?
+                     choice.result / this.state.total * 100 : 0;
+        style = { width: `${percentage}%` };
+
+    return (
+      <li key={index}>
+        <div className="choice-graph" style={style}></div>
+        <div className="choice">{choice.name}</div>
+        <div className="choice-result">{choice.result}</div>
+      </li>
+    );
   },
 
   getChoicesWithResult() {
@@ -54,5 +65,9 @@ var Result = React.createClass({
             .value();
   }
 });
+
+function sum(a, b) {
+  return (a || 0) + (b || 0);
+}
 
 module.exports = Result;

@@ -12,11 +12,8 @@
     a {
       @extend %link;
       display: inline-block;
+      margin: 0 5px;
       min-width: 100px;
-
-      & + a {
-        margin-left: 10px;
-      }
 
       &.active {
         display: none;
