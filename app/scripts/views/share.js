@@ -7,7 +7,7 @@ var Share = React.createClass({
   },
 
   render() {
-    var subject = getSubject(this.props.poll.question),
+    var subject = getSubject(this.props.poll.title),
         url = getUrl(this.props.pollId),
         encUrl = encode(url),
         params = { subject, url, encUrl };
@@ -28,7 +28,7 @@ var Share = React.createClass({
 
   renderMailLink(params) {
     var encSubject = encode(params.subject),
-        encBody = encode(`${this.props.poll.question}\n\n` +
+        encBody = encode(`${this.props.poll.title}\n\n` +
                          `Answer this poll at:\n` +
                          `${params.url}`),
         href = `mailto:?subject=${encSubject}&body=${encBody}`;
@@ -68,8 +68,8 @@ var Share = React.createClass({
   }
 });
 
-function getSubject(question) {
-  return `Poll: ${question}`;
+function getSubject(title) {
+  return `Poll: ${title}`;
 }
 
 function getUrl(pollId) {

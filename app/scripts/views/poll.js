@@ -31,7 +31,7 @@ var Poll = React.createClass({
 
     return (
       <div className="poll">
-        <h2>{poll.question}</h2>
+        <h2>{poll.title}</h2>
         <RouteHandler {...props}/>
         <nav>{this.state.navs.map(this.renderNav)}</nav>
       </div>

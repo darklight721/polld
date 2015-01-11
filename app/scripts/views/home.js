@@ -9,7 +9,7 @@ var Home = React.createClass({
 
   getInitialState() {
     return {
-      question: '',
+      title: '',
       choices: ['', ''],
       allowMultipleAnswers: false
     }
@@ -24,9 +24,9 @@ var Home = React.createClass({
                  type="text"
                  maxLength="200"
                  placeholder="Enter title here"
-                 value={this.state.question}
-                 onChange={this.handleQuestionChange}
-                 onKeyPress={this.handleQuestionEnter}
+                 value={this.state.title}
+                 onChange={this.handleTitleChange}
+                 onKeyPress={this.handleTitleEnter}
                  required/>
         </div>
         <div className="field">
@@ -56,11 +56,11 @@ var Home = React.createClass({
     this.transitionTo('share', { pollId });
   },
 
-  handleQuestionChange(e) {
-    this.setState({ question: e.target.value });
+  handleTitleChange(e) {
+    this.setState({ title: e.target.value });
   },
 
-  handleQuestionEnter(e) {
+  handleTitleEnter(e) {
     if (e.which !== 13) return;
 
     e.preventDefault();
