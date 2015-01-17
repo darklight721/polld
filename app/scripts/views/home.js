@@ -1,44 +1,27 @@
 var React = require('react'),
     Router = require('react-router'),
-    Choices = require('./choices'),
-  { Polls } = require('../store'),
-    _ = require('underscore');
+    TitleInput = require('./home/title-input'),
+    ChoicesInput = require('./home/choices-input'),
+    AllowMultipleAnswersInput = require('./home/allow-multiple-answers-input'),
+  { Polls } = require('../store');
 
 var Home = React.createClass({
   mixins: [ Router.Navigation ],
 
-  getInitialState() {
-    return {
-      title: '',
-      choices: ['', ''],
-      allowMultipleAnswers: false
-    }
-  },
-
   render() {
     return (
-      <form className="form" onSubmit={this.handleSubmit}>
+      <form className="form" onSubmit={this.submit}>
         <div className="field">
           <label>Poll Title</label>
-          <input className="title"
-                 type="text"
-                 maxLength="200"
-                 placeholder="Enter title here"
-                 value={this.state.title}
-                 onChange={this.handleTitleChange}
-                 onKeyPress={this.handleTitleEnter}
-                 required/>
+          <TitleInput value={''}/>
         </div>
         <div className="field">
-          <Choices ref="choices"
-                   list={this.state.choices}
-                   onChange={this.handleChoicesChange}/>
+          <label>Poll Choices</label>
+          <ChoicesInput value={['', '']}/>
         </div>
         <div className="field">
           <label className="multiple-answers">
-            <input type="checkbox"
-                   value={this.state.allowMultipleAnswers}
-                   onChange={this.handleAllowMultipleAnswersChange}/>
+            <AllowMultipleAnswersInput value={false}/>
             Allow multiple answers?
           </label>
         </div>
@@ -49,42 +32,12 @@ var Home = React.createClass({
     );
   },
 
-  handleSubmit(e) {
+  submit(e) {
     e.preventDefault();
+    // validate here
 
-    var pollId = Polls.create(this.state);
+    var pollId = Polls.create(poll);
     this.transitionTo('share', { pollId });
-  },
-
-  handleTitleChange(e) {
-    this.setState({ title: e.target.value });
-  },
-
-  handleTitleEnter(e) {
-    if (e.which !== 13) return;
-
-    e.preventDefault();
-    this.refs.choices.focus(0);
-  },
-
-  handleChoicesChange(choice, index) {
-    var choices = _.clone(this.state.choices);
-
-    if (choice !== null) {
-      if (index >= 0)
-        choices[index] = choice;
-      else
-        choices.push(choice);
-    }
-    else {
-      choices.splice(index, 1);
-    }
-
-    this.setState({ choices });
-  },
-
-  handleAllowMultipleAnswersChange() {
-    this.setState({ allowMultipleAnswers: !this.state.allowMultipleAnswers });
   }
 });
 
