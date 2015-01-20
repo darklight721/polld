@@ -100,9 +100,8 @@ var ChoicesInput = React.createClass({
   },
 
   validate() {
-    return _.chain(this.state.value)
-            .map((a, i) => this.validateChoice(i))
-            .every();
+    return this.state.value.map((a, i) => this.validateChoice(i))
+                           .every(a => a);
   },
 
   get value() {

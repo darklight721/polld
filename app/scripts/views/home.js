@@ -8,20 +8,22 @@ var React = require('react'),
 var Home = React.createClass({
   mixins: [ Router.Navigation ],
 
+  inputs: ['title', 'choices', 'allowMultipleAnswers'],
+
   render() {
     return (
       <form className="form" onSubmit={this.submit}>
         <div className="field">
           <label>Poll Title</label>
-          <TitleInput value={''}/>
+          <TitleInput ref={this.inputs[0]} value={''}/>
         </div>
         <div className="field">
           <label>Poll Choices</label>
-          <ChoicesInput value={['', '']}/>
+          <ChoicesInput ref={this.inputs[1]} value={['', '']}/>
         </div>
         <div className="field">
           <label className="multiple-answers">
-            <AllowMultipleAnswersInput value={false}/>
+            <AllowMultipleAnswersInput ref={this.inputs[2]} value={false}/>
             Allow multiple answers?
           </label>
         </div>
@@ -34,10 +36,23 @@ var Home = React.createClass({
 
   submit(e) {
     e.preventDefault();
-    // validate here
 
-    var pollId = Polls.create(poll);
-    this.transitionTo('share', { pollId });
+    if (this.validate()) {
+      var pollId = Polls.create(this.serialize());
+      this.transitionTo('share', { pollId });
+    }
+  },
+
+  validate() {
+    return this.inputs.map(a => this.refs[a].validate())
+                      .every(a => a);
+  },
+
+  serialize() {
+    return this.inputs.reduce((values, input) => {
+      values[input] = this.refs[input].value;
+      return values;
+    }, {});
   }
 });
 
