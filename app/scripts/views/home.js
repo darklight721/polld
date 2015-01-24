@@ -1,44 +1,34 @@
 var React = require('react'),
     Router = require('react-router'),
-    Choices = require('./choices'),
-  { Polls } = require('../store'),
-    _ = require('underscore');
+    _ = require('underscore'),
+    TitleInput = require('./home/title-input'),
+    ChoicesInput = require('./home/choices-input'),
+    AllowMultipleAnswersInput = require('./home/allow-multiple-answers-input'),
+  { Polls } = require('../store');
 
 var Home = React.createClass({
   mixins: [ Router.Navigation ],
 
-  getInitialState() {
-    return {
-      title: '',
-      choices: ['', ''],
-      allowMultipleAnswers: false
-    }
+  model: {
+    title: { ref: 'input1', value: '' },
+    choices: { ref: 'input2', value: ['', ''] },
+    allowMultipleAnswers: { ref: 'input3', value: false }
   },
 
   render() {
     return (
-      <form className="form" onSubmit={this.handleSubmit}>
+      <form className="form" onSubmit={this.submit}>
         <div className="field">
           <label>Poll Title</label>
-          <input className="title"
-                 type="text"
-                 maxLength="200"
-                 placeholder="Enter title here"
-                 value={this.state.title}
-                 onChange={this.handleTitleChange}
-                 onKeyPress={this.handleTitleEnter}
-                 required/>
+          <TitleInput {...this.model.title}/>
         </div>
         <div className="field">
-          <Choices ref="choices"
-                   list={this.state.choices}
-                   onChange={this.handleChoicesChange}/>
+          <label>Poll Choices</label>
+          <ChoicesInput {...this.model.choices}/>
         </div>
         <div className="field">
           <label className="multiple-answers">
-            <input type="checkbox"
-                   value={this.state.allowMultipleAnswers}
-                   onChange={this.handleAllowMultipleAnswersChange}/>
+            <AllowMultipleAnswersInput {...this.model.allowMultipleAnswers}/>
             Allow multiple answers?
           </label>
         </div>
@@ -49,42 +39,25 @@ var Home = React.createClass({
     );
   },
 
-  handleSubmit(e) {
+  submit(e) {
     e.preventDefault();
 
-    var pollId = Polls.create(this.state);
-    this.transitionTo('share', { pollId });
-  },
-
-  handleTitleChange(e) {
-    this.setState({ title: e.target.value });
-  },
-
-  handleTitleEnter(e) {
-    if (e.which !== 13) return;
-
-    e.preventDefault();
-    this.refs.choices.focus(0);
-  },
-
-  handleChoicesChange(choice, index) {
-    var choices = _.clone(this.state.choices);
-
-    if (choice !== null) {
-      if (index >= 0)
-        choices[index] = choice;
-      else
-        choices.push(choice);
+    if (this.validate()) {
+      var pollId = Polls.create(this.serialize());
+      this.transitionTo('share', { pollId });
     }
-    else {
-      choices.splice(index, 1);
-    }
-
-    this.setState({ choices });
   },
 
-  handleAllowMultipleAnswersChange() {
-    this.setState({ allowMultipleAnswers: !this.state.allowMultipleAnswers });
+  validate() {
+    return _.map(this.model, ({ ref }) => this.refs[ref].validate())
+            .every(isValid => isValid);
+  },
+
+  serialize() {
+    return _.reduce(this.model, (values, { ref }) => {
+      values[ref] = this.refs[ref].value();
+      return values;
+    }, {});
   }
 });
 

@@ -3,6 +3,7 @@
   "version": "0.0.0",
   "dependencies": {},
   "devDependencies": {
+    "6to5ify": "^3.1.2",
     "del": "~0.1.3",
     "firebase": "^2.0.6",
     "gulp": "~3.8.8",
@@ -20,7 +21,6 @@
     "promise": "^6.0.1",
     "react": "latest",
     "react-router": "^0.11.6",
-    "reactify": "latest",
     "underscore": "^1.7.0",
     "vinyl-source-stream": "^1.0.0",
     "watchify": "~2.1"
@@ -29,13 +29,6 @@
     "node": ">=0.10.0"
   },
   "browserify": {
-    "transform": [
-      [
-        "reactify",
-        {
-          "es6": true
-        }
-      ]
-    ]
+    "transform": ["6to5ify"]
   }
 }

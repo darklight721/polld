@@ -66,6 +66,7 @@ $global-radius: 3px;
 
   margin: 0;
   padding: 10px;
+  border: solid 1px transparent;
   border-radius: $global-radius;
   background-color: rgba($white, 0.8);
   color: $black;
@@ -73,6 +74,11 @@ $global-radius: 3px;
 
   &:focus, &:hover {
     background-color: rgba($white, 1);
+  }
+
+  &.input-invalid {
+    border-color: $red;
+    color: $red;
   }
 }
 
