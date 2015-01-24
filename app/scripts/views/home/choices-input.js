@@ -71,8 +71,7 @@ var ChoicesInput = React.createClass({
       [index]: { value: { $set: e.target.value } }
     });
 
-    this.setState({ value });
-    this.validateChoice(value, index);
+    this.setState({ value }, () => this.validate(index));
   },
 
   handleRemove(index) {
@@ -85,26 +84,30 @@ var ChoicesInput = React.createClass({
       e.preventDefault();
   },
 
-  validateChoice(index, _choices) {
-    var choices = _choices === undefined ? this.state.value : _choices,
-        choice = choices[index],
-        isInvalid = choices.filter(a => a.value === choice.value).length > 1;
+  validate(index) {
+    var choices = this.state.value;
+
+    if (choices.length < 2)
+      return false;
+
+    var choicesToValidate = index === undefined ? choices : [choices[index]],
+        isInvalid = choicesToValidate.reduce((isInvalid, choice) => {
+          var value = choice.value.trim();
+
+          isInvalid[choice.id] = !value ||
+            choices.filter(a => a.value.trim() === value).length > 1;
+
+          return isInvalid;
+        }, {});
 
     this.setState({
-      isInvalid: update(this.state.isInvalid, {
-        [choice[id]]: { $set: isInvalid }
-      })
+      isInvalid: update(this.state.isInvalid, { $merge: isInvalid })
     });
 
-    return !isInvalid;
+    return !_.some(isInvalid);
   },
 
-  validate() {
-    return this.state.value.map((a, i) => this.validateChoice(i))
-                           .every(a => a);
-  },
-
-  get value() {
+  value() {
     return this.state.value.map(({ value }) => value.trim());
   }
 });

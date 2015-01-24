@@ -1,5 +1,6 @@
 var React = require('react'),
     Router = require('react-router'),
+    _ = require('underscore'),
     TitleInput = require('./home/title-input'),
     ChoicesInput = require('./home/choices-input'),
     AllowMultipleAnswersInput = require('./home/allow-multiple-answers-input'),
@@ -8,22 +9,26 @@ var React = require('react'),
 var Home = React.createClass({
   mixins: [ Router.Navigation ],
 
-  inputs: ['title', 'choices', 'allowMultipleAnswers'],
+  model: {
+    title: { ref: 'input1', value: '' },
+    choices: { ref: 'input2', value: ['', ''] },
+    allowMultipleAnswers: { ref: 'input3', value: false }
+  },
 
   render() {
     return (
       <form className="form" onSubmit={this.submit}>
         <div className="field">
           <label>Poll Title</label>
-          <TitleInput ref={this.inputs[0]} value={''}/>
+          <TitleInput {...this.model.title}/>
         </div>
         <div className="field">
           <label>Poll Choices</label>
-          <ChoicesInput ref={this.inputs[1]} value={['', '']}/>
+          <ChoicesInput {...this.model.choices}/>
         </div>
         <div className="field">
           <label className="multiple-answers">
-            <AllowMultipleAnswersInput ref={this.inputs[2]} value={false}/>
+            <AllowMultipleAnswersInput {...this.model.allowMultipleAnswers}/>
             Allow multiple answers?
           </label>
         </div>
@@ -44,13 +49,13 @@ var Home = React.createClass({
   },
 
   validate() {
-    return this.inputs.map(a => this.refs[a].validate())
-                      .every(a => a);
+    return _.map(this.model, ({ ref }) => this.refs[ref].validate())
+            .every(isValid => isValid);
   },
 
   serialize() {
-    return this.inputs.reduce((values, input) => {
-      values[input] = this.refs[input].value;
+    return _.reduce(this.model, (values, { ref }) => {
+      values[ref] = this.refs[ref].value();
       return values;
     }, {});
   }

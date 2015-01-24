@@ -15,7 +15,7 @@ var AllowMultipleAnswersInput = React.createClass({
 
   render() {
     return (
-      <Input type="checkbox"
+      <input type="checkbox"
              value={this.state.value}
              onChange={this.handleChange}/>
     );
@@ -29,7 +29,7 @@ var AllowMultipleAnswersInput = React.createClass({
     return true;
   },
 
-  get value() {
+  value() {
     return this.state.value;
   }
 });

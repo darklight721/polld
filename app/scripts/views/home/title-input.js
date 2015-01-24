@@ -50,7 +50,7 @@ var TitleInput = React.createClass({
     return !isInvalid;
   },
 
-  get value() {
+  value() {
     return this.state.value.trim();
   }
 });
