@@ -66,18 +66,41 @@ gulp.task('fonts', function() {
     .pipe($.size());
 });
 
+gulp.task('serve', function() {
+  gulp.src('dist')
+  .pipe($.webserver({
+    livereload: true,
+    port: 9000
+  }));
+});
+
+gulp.task('minify:js', function() {
+  return gulp.src('dist/scripts/**/*.js')
+  .pipe($.uglify())
+  .pipe(gulp.dest('dist/scripts/'))
+  .pipe($.size());
+});
+
+gulp.task('minify:css', function() {
+  return gulp.src('dist/styles/**/*.css')
+  .pipe($.minifyCss())
+  .pipe(gulp.dest('dist/styles'))
+  .pipe($.size());
+});
+
 gulp.task('clean', del.bind(null, 'dist'));
 
 gulp.task('build', ['html', 'styles', 'scripts', 'images', 'fonts']);
 
 gulp.task('default', sync(['clean', 'build']));
 
-gulp.task('serve', function() {
-  gulp.src('dist')
-    .pipe($.webserver({
-      livereload: true,
-      port: 9000
-    }));
+gulp.task('minify', ['minify:js', 'minify:css']);
+
+gulp.task('preview', sync(['default', 'minify', 'serve']));
+
+gulp.task('deploy', sync(['default', 'minify']), function() {
+  return gulp.src('dist/**/*')
+    .pipe($.ghPages({ origin: 'github' }));
 });
 
 gulp.task('watch', ['default', 'serve'], function() {
