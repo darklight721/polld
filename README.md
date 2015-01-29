@@ -20,7 +20,3 @@ To run the server to preview in real time whatever changes you make
 To preview the minified built files
 
     $ gulp preview
-
-To deploy the minified built files to gh-pages branch
-
-    $ gulp deploy

@@ -98,11 +98,6 @@ gulp.task('minify', ['minify:js', 'minify:css']);
 
 gulp.task('preview', sync(['default', 'minify', 'serve']));
 
-gulp.task('deploy', sync(['default', 'minify']), function() {
-  return gulp.src('dist/**/*')
-    .pipe($.ghPages({ origin: 'github' }));
-});
-
 gulp.task('watch', ['default', 'serve'], function() {
   gulp.watch('app/*.html', ['html']);
   gulp.watch('app/styles/**/*.scss', ['styles']);

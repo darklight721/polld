@@ -9,7 +9,6 @@
     "gulp": "~3.8.8",
     "gulp-autoprefixer": "~1.0.1",
     "gulp-cache": "~0.2.4",
-    "gulp-gh-pages": "^0.4.0",
     "gulp-imagemin": "latest",
     "gulp-load-plugins": "~0.7.0",
     "gulp-minify-css": "^0.4.3",
