@@ -8,6 +8,35 @@ var gulp        = require('gulp'),
     watchify    = require('watchify'),
     source      = require('vinyl-source-stream');
 
+var bundler = {
+  w: null,
+
+  init: function() {
+    this.w = watchify(browserify({
+      entries: ['./app/scripts/app.js'],
+      insertGlobals: true,
+      cache: {},
+      packageCache: {},
+      fullPaths: true
+    }));
+  },
+
+  bundle: function() {
+    return this.w && this.w.bundle()
+      .on('error', $.util.log.bind($.util, 'Browserify Error'))
+      .pipe(source('app.js'))
+      .pipe(gulp.dest('dist/scripts'));
+  },
+
+  watch: function() {
+    this.w && this.w.on('update', this.bundle.bind(this));
+  },
+
+  stop: function() {
+    this.w && this.w.close();
+  }
+}
+
 gulp.task('styles', function() {
   return gulp.src('app/styles/main.scss')
     .pipe($.rubySass({
@@ -21,23 +50,8 @@ gulp.task('styles', function() {
 });
 
 gulp.task('scripts', function() {
-  var bundler = watchify(browserify({
-    entries: ['./app/scripts/app.js'],
-    insertGlobals: true,
-    cache: {},
-    packageCache: {},
-    fullPaths: true
-  }));
-
-  function rebundle() {
-    return bundler.bundle()
-      .on('error', $.util.log.bind($.util, 'Browserify Error'))
-      .pipe(source('app.js'))
-      .pipe(gulp.dest('dist/scripts'));
-  }
-
-  bundler.on('update', rebundle);
-  return rebundle();
+  bundler.init();
+  return bundler.bundle();
 });
 
 gulp.task('html', function() {
@@ -68,39 +82,50 @@ gulp.task('fonts', function() {
 
 gulp.task('serve', function() {
   gulp.src('dist')
-  .pipe($.webserver({
-    livereload: true,
-    port: 9000
-  }));
+    .pipe($.webserver({
+      livereload: true,
+      port: 9000
+    }));
 });
 
 gulp.task('minify:js', function() {
   return gulp.src('dist/scripts/**/*.js')
-  .pipe($.uglify())
-  .pipe(gulp.dest('dist/scripts/'))
-  .pipe($.size());
+    .pipe($.uglify())
+    .pipe(gulp.dest('dist/scripts/'))
+    .pipe($.size());
 });
 
 gulp.task('minify:css', function() {
   return gulp.src('dist/styles/**/*.css')
-  .pipe($.minifyCss())
-  .pipe(gulp.dest('dist/styles'))
-  .pipe($.size());
+    .pipe($.minifyCss())
+    .pipe(gulp.dest('dist/styles'))
+    .pipe($.size());
 });
-
-gulp.task('clean', del.bind(null, 'dist'));
-
-gulp.task('build', ['html', 'styles', 'scripts', 'images', 'fonts']);
-
-gulp.task('default', sync(['clean', 'build']));
 
 gulp.task('minify', ['minify:js', 'minify:css']);
 
-gulp.task('preview', sync(['default', 'minify', 'serve']));
+gulp.task('clean', del.bind(null, 'dist'));
 
-gulp.task('watch', ['default', 'serve'], function() {
+gulp.task('bundle', ['html', 'styles', 'scripts', 'images', 'fonts']);
+
+gulp.task('clean-bundle', sync(['clean', 'bundle']));
+
+gulp.task('build', ['clean-bundle'], bundler.stop.bind(bundler));
+
+gulp.task('build:production', sync(['build', 'minify']));
+
+gulp.task('default', ['build']);
+
+gulp.task('watch', ['clean-bundle', 'serve'], function() {
+  bundler.watch();
   gulp.watch('app/*.html', ['html']);
   gulp.watch('app/styles/**/*.scss', ['styles']);
   gulp.watch('app/images/**/*', ['images']);
   gulp.watch('app/fonts/**/*', ['fonts']);
+});
+
+gulp.task('preview', ['build:production', 'serve']);
+
+gulp.task('deploy', ['build:production'], function() {
+  $.run('firebase deploy').exec();
 });
