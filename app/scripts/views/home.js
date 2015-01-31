@@ -54,8 +54,8 @@ var Home = React.createClass({
   },
 
   serialize() {
-    return _.reduce(this.model, (values, { ref }) => {
-      values[ref] = this.refs[ref].value();
+    return _.reduce(this.model, (values, { ref }, key) => {
+      values[key] = this.refs[ref].value();
       return values;
     }, {});
   }

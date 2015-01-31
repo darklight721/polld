@@ -1,7 +1,7 @@
 var Firebase = require('firebase'),
     Promise = require('promise'),
     _ = require('underscore'),
-    rootRef = new Firebase('https://darksmint.firebaseio.com/');
+    rootRef = new Firebase('https://polld.firebaseio.com/');
 
 var Memory = {
   store: {},
