@@ -16,8 +16,7 @@ var bundler = {
       entries: ['./app/scripts/app.js'],
       insertGlobals: true,
       cache: {},
-      packageCache: {},
-      fullPaths: true
+      packageCache: {}
     }));
   },
 
@@ -88,6 +87,10 @@ gulp.task('serve', function() {
     }));
 });
 
+gulp.task('set-production', function() {
+  process.env.NODE_ENV = 'production';
+});
+
 gulp.task('minify:js', function() {
   return gulp.src('dist/scripts/**/*.js')
     .pipe($.uglify())
@@ -112,7 +115,7 @@ gulp.task('clean-bundle', sync(['clean', 'bundle']));
 
 gulp.task('build', ['clean-bundle'], bundler.stop.bind(bundler));
 
-gulp.task('build:production', sync(['build', 'minify']));
+gulp.task('build:production', sync(['set-production', 'build', 'minify']));
 
 gulp.task('default', ['build']);
 
